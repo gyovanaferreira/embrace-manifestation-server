@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json({limit:'50mb'}));
 
-const ANTHROPIC_KEY = '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';
-const RESEND_KEY = 're_5DoNnZKB_GGHgRd6P2FWBn1KRzLAGonkb';
+const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+const RESEND_KEY = process.env.RESEND_KEY;
 const resend = new Resend(RESEND_KEY);
 
 // Colors
