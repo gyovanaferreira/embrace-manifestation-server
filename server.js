@@ -195,7 +195,7 @@ async function buildDocx(name, area, goal, plan) {
   children.push(chkItem("Step 3 — Nervous system regulation (5 minutes)"));
   children.push(chkItem("Step 4 — Journal reflection + evidence logging"));
   children.push(sp(160,0));
-  children.push(body("That is the entire daily practice. It takes 30-45 minutes. You can do this every single day.",GREY,true));
+  children.push(body("That is the entire daily practice. It takes about 15 minutes a day. You can do this every single day.",GREY,true));
 
   // IDENTITY ANCHOR
   children.push(new Paragraph({children:[new PageBreak()]}));
