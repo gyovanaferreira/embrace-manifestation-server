@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch');
 const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, BorderStyle, ShadingType, PageBreak } = require('docx');
 const { Resend } = require('resend');
 
@@ -8,8 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json({limit:'50mb'}));
 
-const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY || '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';
-const RESEND_KEY = process.env.RESEND_KEY || 're_5DoNnZKB_GGHgRd6P2FWBn1KRzLAGonkb';
+const ANTHROPIC_KEY = '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';
+const RESEND_KEY = 're_5DoNnZKB_GGHgRd6P2FWBn1KRzLAGonkb';
 const resend = new Resend(RESEND_KEY);
 
 // Colors
@@ -17,7 +16,7 @@ const NAVY="1C2B3A", TEAL="2A7F7F", ORANGE="C8541A", GREY="6B7280";
 const TEAL_BG="EAF4F4", ORANGE_BG="FDF0E8", GOLD="C8A882";
 
 // ── HEALTH CHECK ──────────────────────────────────────────────────────────────
-app.get('/', (req, res) => res.send('Embrace Manifestation Server running'));
+app.get('/', (req, res) => res.send('Embrace Manifestation Server running. Key loaded: ' + (ANTHROPIC_KEY ? 'YES' : 'NO')));
 
 // ── GENERATE + EMAIL ──────────────────────────────────────────────────────────
 app.post('/generate', async (req, res) => {
