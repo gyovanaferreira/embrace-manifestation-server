@@ -347,4 +347,12 @@ function buildEmailHtml(name, area, goal) {
 }
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  // Keep server warm — ping every 14 minutes
+  setInterval(() => {
+    fetch(`http://localhost:${PORT}/`)
+      .then(() => console.log('Keep-alive ping'))
+      .catch(() => {});
+  }, 14 * 60 * 1000);
+});
