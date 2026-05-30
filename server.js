@@ -24,9 +24,7 @@ app.post('/generate', async (req, res) => {
   if(!name||!area||!goal||!email) return res.status(400).json({error:'Missing fields'});
 
   try {
-    // CALL 1: Days 1-11
     const txt1 = await callClaude(buildPrompt(name, area, goal, 1));
-    // CALL 2: Days 12-21
     const txt2 = await callClaude(buildPrompt(name, area, goal, 2));
 
     const p1 = parseJSON(txt1);
@@ -36,10 +34,8 @@ app.post('/generate', async (req, res) => {
 
     const plan = { intro: p1.intro, days };
 
-    // Generate Word doc
     const docBuffer = await buildDocx(name, area, goal, plan);
 
-    // Send email with attachment
     await resend.emails.send({
       from: 'Embrace Manifestation <onboarding@resend.dev>',
       to: [email],
@@ -259,13 +255,11 @@ async function buildDocx(name, area, goal, plan) {
     children.push(body(d.about||'',GREY,true));
     children.push(sp(160,0));
 
-    // STEP 1 — Videos
     children.push(lbl(`Step 1 — Watch Today`,wcol));
     children.push(chkItem(d.day===1?"Watch all Foundation videos (F1-F6) + Day 1 video":`Watch your Day ${d.day} video`));
     (d.videos||[]).forEach(v => children.push(body("   — "+v, GREY)));
     children.push(sp(180,0));
 
-    // STEP 2 — Exercise
     children.push(lbl(`Step 2 — ${d.exercise_title||'Your Exercise'}`,wcol));
     children.push(body(d.exercise_intro||'',GREY,true));
     children.push(sp(80,0));
@@ -275,13 +269,11 @@ async function buildDocx(name, area, goal, plan) {
     for(let i=0;i<12;i++) children.push(...wline());
     children.push(sp(180,0));
 
-    // STEP 3 — Regulation
     children.push(lbl("Step 3 — Nervous System Regulation",wcol));
     children.push(chkItem("5 minutes of breathwork or binaural beats. Do this before your journal."));
     children.push(body("Let your body settle. This is non-negotiable — it is what makes everything else stick.",GREY,true));
     children.push(sp(180,0));
 
-    // STEP 4 — Journal
     children.push(lbl("Step 4 — Evening Journal Reflection",wcol));
     children.push(box(d.journal_prompt||'',TEAL_BG,TEAL));
     children.push(sp(60,0));
@@ -291,7 +283,6 @@ async function buildDocx(name, area, goal, plan) {
     for(let i=0;i<10;i++) children.push(...wline());
     children.push(sp(160,0));
 
-    // Evidence
     children.push(new Paragraph({spacing:{before:100,after:100},shading:{fill:ORANGE_BG,type:ShadingType.CLEAR},border:{top:{style:BorderStyle.SINGLE,size:3,color:ORANGE},bottom:{style:BorderStyle.SINGLE,size:3,color:ORANGE},left:{style:BorderStyle.THICK,size:14,color:ORANGE},right:{style:BorderStyle.SINGLE,size:3,color:ORANGE}},children:[
       new TextRun({text:"Today's evidence for my new identity:  ",bold:true,size:SZ.body,color:ORANGE,font:"Calibri"}),
       new TextRun({text:"One thing I noticed today — however small — that shows I am already shifting.",size:SZ.body,color:NAVY,italic:true,font:"Calibri"})
@@ -349,7 +340,6 @@ function buildEmailHtml(name, area, goal) {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  // Keep server warm — ping every 14 minutes
   setInterval(() => {
     fetch(`http://localhost:${PORT}/`)
       .then(() => console.log('Keep-alive ping'))
