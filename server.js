@@ -37,7 +37,7 @@ app.post('/generate', async (req, res) => {
     const docBuffer = await buildDocx(name, area, goal, plan);
 
     await resend.emails.send({
-      from: 'Embrace Manifestation <onboarding@resend.dev>',
+      from: 'Embrace Manifestation <journal@embracemanifestation.com>',
       to: [email],
       subject: `${name}'s 21-Day ${area} Identity Reset — Your Action Map`,
       html: buildEmailHtml(name, area, goal),
